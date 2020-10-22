@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmorimot <kmorimot@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: kmorimot <kmorimot@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 19:16:36 by kmorimot          #+#    #+#             */
-/*   Updated: 2020/10/22 01:00:57 by kmorimot         ###   ########.fr       */
+/*   Updated: 2020/10/22 19:39:14 by kmorimot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# define MAX_FD 256
 
 int		get_next_line(int fd, char **line);
-int		ft_find_line(char **line, char *save, char *buf);
+int		ft_find_line(char **line, char **save, int fd, char *buf);
 size_t	ft_strlen(char *s);
 char	*ft_strdup(const char *s1);
 void	ft_strlcpy2(char *dst, const char *src, size_t dstsize);
