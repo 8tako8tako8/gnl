@@ -1,63 +1,99 @@
 #include "get_next_line.h"
-/*
-int        main(int ac, char **av)
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <fcntl.h>
+
+int main(int argc, char **argv)
 {
-     int        fd;
-     char    *line;
-     int        flag;
+	int fd[argc];
+	int ret;
+	int line_count;
+	char *line;
+	int i;
 
-     (void)ac;
-     fd = open(av[1], O_RDONLY);
-     while ((flag = get_next_line(fd, &line)) == 1)
-     {
-         write(1, line, ft_strlen(line));
-         write(1, "\n", 1);
-         free(line);
-     }
-     if (flag == -1)
-         write(2, "get_next_line_error", 20);
-     write(1, line, ft_strlen(line));
-     free(line);
-     close(fd);
-     return (0);
- }
-*/
-// #include <stdio.h>
-
-// int main()
-// {
-//     char *line;
-//      get_next_line(0,&line);
-//         printf("%s\n",line);
-
-// }
-
-#include <stdio.h>
-
-int main()
-{
-    char *str;
-    int fd = open("./sample.txt", O_RDONLY);
-    if (fd < 0) {
-        printf("\033[1;31mCould not open file\n");
-        return 0377;
-    }
-    while(get_next_line(fd, &str))
-    {
-        write(1, str, ft_strlen(str));
-        write(1, "\n", 1);
-        free(str);
-    }
-    fd = open("./sample2.txt", O_RDONLY);
-    if (fd < 0) {
-        printf("\033[1;31mCould not open file\n");
-        return 0377;
-    }
-    while(get_next_line(fd, &str))
-    {
-        write(1, str, ft_strlen(str));
-        write(1, "\n", 1);
-        free(str);
-    }
-    free(str);
+	i = 1;
+	line_count = 0;
+	if (argc >= 2)
+	{
+		while (i < argc)
+		{
+			line_count = 0;
+			fd[i] = open(argv[i], O_RDONLY);
+			printf("==============================\nfd=%d: %s\n==============================\n\n", fd[i], argv[i]);
+			while ((ret = get_next_line(fd[i], &line)) > 0)
+			{
+				printf("[return: %d] line#%4d: %s$\n", ret, ++line_count, line);
+				free(line);
+				line = NULL;
+			}
+			printf("[return: %d] line#%4d: %s$\n", ret, ++line_count, line);
+			if (ret == -1)
+				printf("Error\n");
+			else if (ret == 0)
+				printf("\n\n");
+			i++;
+			free(line);
+		}
+	}
+	else if (argc == 1)
+	{
+		while ((ret = get_next_line(0, &line)) > 0)
+			printf("[Return: %d] Line#%4d: %s\n", ret, ++line_count, line);
+		if (ret == -1)
+			printf("Error\n");
+		else if (ret == 0)
+			printf("\nEnd of stdin\n");
+	}
+	while (argc > 0)
+		close(fd[(argc--) - 1]);
+	//while (1) {}
+	return (0);
 }
+
+/* int main(int argc, char **argv)
+{
+	int fd[argc];
+	int ret;
+	int line_count1;
+	int line_count2;
+	char *line;
+	int i;
+
+
+	line_count1 = 0;
+	line_count2 = 0;
+	if (argc == 2)
+	{
+			fd[1] = open(argv[1], O_RDONLY);
+			printf("==============================\nfd=%d: %s\n==============================\n\n", fd[1], argv[1]);
+			while ((ret = get_next_line(fd[1], &line)) > 0 || (ret = get_next_line(fd[2], &line)) > 0)
+			{
+				printf("[return: %d] line#%4d: %s$\n", ret, ++line_count1, line);
+				printf("[return: %d] line#%4d: %s$\n", ret, ++line_count2, line);
+				free(line);
+				line = NULL;
+			}
+			printf("[return: %d] line#%4d: %s$\n", ret, ++line_count1, line);
+			printf("[return: %d] line#%4d: %s$\n", ret, ++line_count2, line);
+			if (ret == -1)
+				printf("Error\n");
+			else if (ret == 0)
+				printf("\n\n");
+			i++;
+			free(line);
+	}
+	else if (argc == 1)
+	{
+		while ((ret = get_next_line(0, &line)) > 0)
+			printf("[Return: %d] Line#%4d: %s\n", ret, ++line_count, line);
+		if (ret == -1)
+			printf("Error\n");
+		else if (ret == 0)
+			printf("\nEnd of stdin\n");
+	}
+	while (argc > 0)
+		close(fd[(argc--) - 1]);
+	//while (1) {}
+	return (0);
+} */
