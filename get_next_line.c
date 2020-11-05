@@ -6,7 +6,7 @@
 /*   By: kmorimot <kmorimot@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 20:56:16 by kmorimot          #+#    #+#             */
-/*   Updated: 2020/11/05 19:54:02 by kmorimot         ###   ########.fr       */
+/*   Updated: 2020/11/05 21:39:52 by kmorimot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	ft_stdin_or_read_file(char **line, char **save, int fd)
 
 int	get_next_line(int fd, char **line)
 {
-	static char	*save[MAX_FD];
+	static char	*save[MAX_FD];//static変数で宣言すると自動的に初期化される。
 	int		flag;
 
 	flag = 0;
