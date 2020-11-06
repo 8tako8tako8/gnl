@@ -112,6 +112,15 @@ int main(int argc, char **argv)
 		if (argc >=4)
 			close(fd3);
 	}
+	else if (argc == 1)
+	{
+		while ((res1 = get_next_line(0, &line)) > 0)
+			printf("[Return: %d] Line#%4d: %s\n", res1, ++line_count1, line);
+		if (res1 == -1)
+			printf("Error\n");
+		else if (res1 == 0)
+			printf("\nEnd of stdin\n");
+	}
 	while (1){}
 	return (0);
 }
