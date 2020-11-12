@@ -6,20 +6,20 @@
 /*   By: kmorimot <kmorimot@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 20:56:16 by kmorimot          #+#    #+#             */
-/*   Updated: 2020/11/05 21:39:52 by kmorimot         ###   ########.fr       */
+/*   Updated: 2020/11/12 21:56:28 by kmorimot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_read_error(char **line, char **save, int fd)
+int		ft_read_error(char **line, char **save, int fd)
 {
 	free(*line);
 	free(save[fd]);
 	return (-1);
 }
 
-int	ft_find_line(char **line, char **save, int fd, char *buf)
+int		ft_find_line(char **line, char **save, int fd, char *buf)
 {
 	size_t		find_line;
 	int			flag;
@@ -44,21 +44,16 @@ int	ft_find_line(char **line, char **save, int fd, char *buf)
 	return (flag);
 }
 
-int	ft_stdin_or_read_file(char **line, char **save, int fd)
+int		ft_stdin_or_read_file(char **line, char **save, int fd)
 {
 	ssize_t		read_size;
-	int		flag;
+	int			flag;
 	char		*buf;
 
 	flag = 0;
 	if (!(buf = (char *)malloc(BUFFER_SIZE + 1)))
 		return (-1);
-	while (flag == 0 && fd == 0 && (read_size = read(fd, buf, BUFFER_SIZE)) > 0)
-	{
-		buf[read_size] = '\0';
-		flag = ft_find_line(line, save, fd, buf);
-	}
-	while (flag == 0 && fd > 0 && (read_size = read(fd, buf, BUFFER_SIZE)) > 0)
+	while (flag == 0 && (read_size = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		buf[read_size] = '\0';
 		flag = ft_find_line(line, save, fd, buf);
@@ -70,10 +65,10 @@ int	ft_stdin_or_read_file(char **line, char **save, int fd)
 		return (flag);
 }
 
-int	get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
-	static char	*save[MAX_FD];//static変数で宣言すると自動的に初期化される。
-	int		flag;
+	static char		*save[MAX_FD];
+	int				flag;
 
 	flag = 0;
 	if (fd < 0 || MAX_FD <= fd || line == NULL)
